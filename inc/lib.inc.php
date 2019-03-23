@@ -15,7 +15,7 @@ function addItemToCatalog($link,$title,$author,$pubyear,$price){
     mysqli_stmt_close($stmt);
     return true;
     }
-function selectAllItems($link){
+function selectAllItems($link){//то что в базе есть список книг
 	$sql="SELECT id,title,author,pubyear,price FROM catalog";
 	if(!$result=mysqli_query($link,$sql)){
 		return false;
@@ -25,12 +25,12 @@ function selectAllItems($link){
     mysqli_free_result($result);
     return $items;
     }
-function saveBasket(){
+function saveBasket(){ //сохраняет корзину с товарами в куки
 	global $basket;
 	$basket=base64_encode(serialize($basket));
 	setcookie('basket',$basket,0x7FFFFFFF);
     }
-function basketInit(){
+function basketInit(){ //создает либо загружает в переменную $basket корзину с товарами
 	global $basket,$count;
 	if(!isset($_COOKIE['basket'])){
 		$basket=array('orderid'=>uniqid());
@@ -40,12 +40,12 @@ function basketInit(){
 		$count=count($basket)-1;
 	}
 	}
-function add2Basket($id){
+function add2Basket($id){ //добавляет товар в корзину пользователя и принимает в качестве аргумента идентификатор товара
     global $basket;
     $basket[$id]=1;
     saveBasket();
     }
-function myBasket(){
+function myBasket(){ //возвращает корзину в виде ассоциативного массива
 	global $link,$basket;
 	$goods=array_keys($basket);
 	array_shift($goods);
@@ -57,7 +57,7 @@ function myBasket(){
 	mysqli_free_result($result);
 	return $items;
     }
-function result2Array($data){
+function result2Array($data){ //принимает результат выполнения функции myBasket и возвращает ассоциативный массив товаров дополненный их количеством
 	global $basket;
 	$arr=array();
 	while($row=mysqli_fetch_assoc($data)){
@@ -66,6 +66,9 @@ function result2Array($data){
 	}
 	return $arr;
     }
-function deleteItemFromBasket(){
+function deleteItemFromBasket($id){
+	global $basket;
+    unset($basket[$id]);
+    saveBasket();
     }
 ?>

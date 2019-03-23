@@ -11,9 +11,7 @@ header('Content-Type: text/html; charset=utf-8');
 <body>
 	<h1>Ваша корзина</h1>
 <?php
-//unset($basket);
-echo implode($basket);
-if (!$basket){
+if (myBasket()==false){
 echo "<h1>Корзина пуста<h1>";
 ?>
 <div align="left">
