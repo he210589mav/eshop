@@ -110,7 +110,8 @@ function getOrders(){
 		$items=mysqli_fetch_all($result,MYSQLI_ASSOC);
 		mysqli_free_result($result);
 		$orderinfo["goods"]=$items;
-		$allorders[]=$orderinfo;}
+		$allorders[]=$orderinfo;
+	    } 
 	    }
 	return $allorders;
     }
